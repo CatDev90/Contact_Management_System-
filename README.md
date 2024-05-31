@@ -10,3 +10,18 @@ Activate virtual enviorment
 python3 -m venv venv
 source venv/bin/activate
 '''
+
+'''cmd
+python -m venv venv
+.\venv\Scripts\activate
+'''
+
+## Usage
+To run script
+'''bash
+python3 main.py
+'''
+
+'''cmd
+python main.py
+'''
