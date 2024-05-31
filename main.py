@@ -1,16 +1,18 @@
 import sqlite3
 import re
 
-"""A program that allows a user to perform CRUD operations on a database using the CLI"""
+
 
 class CMS:
+    """A program that allows a user to perform CRUD 
+    operations on a database using the CLI
+    """
     
-
-    """
-    Creating the database
-    """
-    # Creating the database if it does not exist
+    # DB Operations
     def create_database():
+        """
+        Creating the database
+        """
 
         # Creating a connection to the database
         con = sqlite3.connect('contacts.db')
@@ -25,7 +27,7 @@ class CMS:
                         email TEXT
                 )""")
 
-        #Creating a list to insert many contacts in the contacts table
+        #Creating a list to insert many contacts into database table
         many_contacts = [('Miles', 'Davis', '07780090011', 'Mile@Davis.com'),
                         ('Nina','Simone','07740050011','Nina@Simone.com'),
                         ('Cat','Stevens','07730050011','Cat@Stevens.com'),
@@ -42,22 +44,28 @@ class CMS:
                         ('Jeff', 'Buckley','07789982211', 'Jeff@lastGoodbye.com'),
                         ('Kim', 'Deal', '07700100211', 'Kim@cannonballs.com'),
                         ('Kim', 'Gordan', '07710113455', 'Gordan@coolthings.com'),
-                        ('Damon', 'Albarn', '07723328911', 'Damon@DareDayz.com')]
+                        ('Damon', 'Albarn', '07723328911', 'Damon@DareDayz.com'),
+                        ('Paul', 'Weller', '07794881211', 'Paul@jam.com'),
+                        ('Donna', 'Summer', '07739939921', 'Donna@ontheradio.com'),
+                        ('John', 'Coltrane', '07745534599', 'John@GiantSteps.com'),
+                        ('Ella', 'Fitzgerald', '07711100011', 'Ella@summertime.com'),
+                        ('Dave', 'Brubeck', '07776978121', 'Dave@takeFive.com')]
 
         cur.executemany("""INSERT INTO contacts VALUES (?,?,?,?)""", many_contacts)
         con.commit()
 
 
 
-    """
-    fetching a list of contacts from the database table contacts
-    """
+    # Print all from DB (Test)
     def fetching_data_from_database():
+        """
+        fetching a list of contacts from the database table contacts
+        """
         print('\nfetching contacts...\n')
         con = sqlite3.connect('contacts.db')
         cur = con.cursor()
 
-        #Select all data from database and ordering it alabetically
+        #Selecting all data from database and ordering it alabetically
         cur.execute("SELECT * FROM contacts ORDER BY first_name ASC")
         contacts = cur.fetchall()
 
@@ -67,22 +75,26 @@ class CMS:
 
 
 
-    """
-    A fuction that lets the user search for a contact by name, phone number or email
-    """
+    # CRUD Functions
     def search_contact():
+        """
+        A function that lets the user search for a contact by name,
+        phone number or email
+        """
         con = sqlite3.connect('contacts.db')
         cur = con.cursor()
 
-        search_options = """\nChoose a search by option
+        search_options = """\n
+Choose a search by option
+_________________________
         
 1) Search by first name
 2) Search by last name
 3) Search by phone number
 4) Search by email address
-5) Go back
-                        \n"""        
-        
+5) Go Back              \n"""
+                                
+
         # A while loop that returns user options, unless 5 is pressed
         while (input_option:= input(search_options)) != "5":
             if input_option == "1":
@@ -101,30 +113,13 @@ class CMS:
                 email = input("\nEnter the email address you want to search: ")
                 cur.execute("SELECT * FROM contacts WHERE email LIKE '%{}%'".format(email))
                 print(cur.fetchall())
-            else:
-                print("\nInvalid option")
-
-    """
-    A function for validating phone numbers
-    """
-    def validate_phone_number(phone_number):
-        reg_pattern = r'07\d{9,13}|447\d{7,12}' #regex for uk mobile numbers
-        if re.match(reg_pattern, phone_number): # if the phone number matches the reg_pattern then return value
-            return phone_number
 
 
-    """
-    A function for validating email addresses
-    """        
-    def validate_email(email):
-        reg_pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b' # regex for valid emails
-        if re.match(reg_pattern, email): # if the email matches the reg_pattern then return value
-            return email
 
-    """
-    A function that adds a contact to the database
-    """
     def add_a_contact():
+        """
+        A function that adds a contact to the database
+        """
         con = sqlite3.connect('contacts.db')
         cur = con.cursor()
 
@@ -133,8 +128,8 @@ class CMS:
 
 
         valid_phone_number = False # False flag
-        while not valid_phone_number: # while not a valid phone number return to input
-        
+        while not valid_phone_number: # while not False accept the phone number that was entered
+
             phone_number = input("Phone number: ")
             if CMS.validate_phone_number(phone_number):
                 print("Valid phone number")
@@ -163,17 +158,17 @@ class CMS:
 
 
 
-    """
-    A function that updates cantacts in the databse
-    """
     def update_contact():
+        """
+        A function that updates contacts in the databse
+        """
         con = sqlite3.connect('contacts.db')
         cur = con.cursor()
 
         update_options = """
         
-        Choose an update option
-        _______________________
+ Choose an update option
+_________________________
 
 1) Update first name
 2) Update last name
@@ -181,9 +176,9 @@ class CMS:
 4) Update email address 
 5) See contacts table
 6) Go back
-
-              \n"""
+                        \n"""
         
+        #check enums
         #Creating the user input variables that will update the contacts table
         while (input_option:= input(update_options)) != "6":
             if input_option == "1":
@@ -208,46 +203,68 @@ class CMS:
                 con.commit()
             elif input_option == "5":
                 CMS.fetching_data_from_database()
-            else:
-                print("Invalid option")
             
         print('\nContact has been updated. \n')
 
 
 
-    """
-    A function that deletes contacts from the database
-    """
     def delete_contact():
+        """
+        A function that deletes contacts from the database
+        """
         con = sqlite3.connect('contacts.db')
         cur = con.cursor()
 
 
         first_name = input("Enter the first name of the contact you want to delete: ")
         last_name = input("Enter the last name of the person you want to delete: ")
-
+        
         cur.execute("""SELECT * FROM contacts WHERE first_name LIKE '{}%' 
                     AND last_name LIKE '{}%' """. format(first_name, last_name).title())
-        print('\n', cur.fetchall(), 'has been deleted')
+        print('\n', cur.fetchall(), 'has been deleted.') #Confirming the contact that has been deleted
 
+# confirm that this is the person by doing select query, then confirm (confirm flag?) before deleting
         cur.execute("""DELETE FROM contacts WHERE first_name LIKE '{}%' 
-                    AND last_name LIKE '{}%' """. format(first_name, last_name).title())
+                       AND last_name LIKE '{}%' """.format(first_name, last_name).title())
         con.commit()
 
 
-
-    """
-    A function that closes the connection to the database
-    """
     def close_connection_to_database():
+        """
+        A function that closes the connection to the database
+        """
         print('\nclosing connection to contacts.db...\n')
         con = sqlite3.connect('contacts.db')
         con.close()
 
 
-    """
-    Creating a User prompt
-    """
+
+# Validators
+    def validate_phone_number(phone_number):
+        """
+        A function for validating phone numbers
+        """
+        reg_pattern = r'07\d{9,13}|447\d{7,12}' #regex for uk mobile numbers
+        if re.match(reg_pattern, phone_number): # if the phone number matches the reg_pattern then return value
+            return reg_pattern
+
+
+    def validate_email(email):
+        """
+        A function for validating email addresses
+        """  
+        reg_pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b' # regex for valid emails
+        if re.match(reg_pattern, email): # if the email matches the reg_pattern then return value
+            return email
+
+
+
+# Program Entrypoint
+if __name__ == '__main__':
+
+    CMS.create_database()
+
+    # Creating a user prompt for input options 
     user_prompt = """
 
     
@@ -261,16 +278,12 @@ Please choose one of these options:
 3) To add a contact
 4) To update a contact
 5) To delete a contact
-6) To quit
-            
-                \n"""
+6) To quit               \n"""
 
 
-if __name__ == '__main__':
-
-    # CMS.create_database()
-
-    while (user_input:= input(CMS.user_prompt)) != "6":
+    #while loop that allows user options to perform CRUD operations on the contacts.db
+    while (user_input:= input(
+        user_prompt)) != "6":
         if user_input == "1":
             CMS.fetching_data_from_database()
         elif user_input == "2":
@@ -282,7 +295,6 @@ if __name__ == '__main__':
         elif user_input == "5":
             CMS.delete_contact()
         else:
-            print("Invalid input")
+            print("\nInvalid input")
 
     CMS.close_connection_to_database()
-
