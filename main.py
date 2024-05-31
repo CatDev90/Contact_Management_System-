@@ -285,4 +285,3 @@ if __name__ == '__main__':
             print("Invalid input")
 
     CMS.close_connection_to_database()
-
