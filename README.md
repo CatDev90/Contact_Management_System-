@@ -6,6 +6,7 @@ the database. It also validates uk phone numbers and email inputs from the user.
 
 ## Installation
 Activate virtual enviorment
+
 '''bash
 python3 -m venv venv
 source venv/bin/activate
@@ -17,6 +18,7 @@ python -m venv venv
 '''
 
 ## Usage
+
 To run script
 '''bash
 python3 main.py
