@@ -27,3 +27,8 @@ python3 main.py
 '''cmd
 python main.py
 '''
+
+# Requiuirments
+'''
+pip re
+...
