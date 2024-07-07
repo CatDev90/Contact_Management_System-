@@ -7,28 +7,27 @@ the database. It also validates phone numbers and email inputs from the user.
 ## Installation
 Activate virtual enviorment
 
-'''bash
+bash
 python3 -m venv venv
 source venv/bin/activate
-'''
 
-'''cmd
+
+cmd
 python -m venv venv
 .\venv\Scripts\activate
-'''
 
 ## Usage
 
-To run script
-'''bash
+To run script 
+bash
 python3 main.py
-'''
 
-'''cmd
+
+cmd
 python main.py
-'''
+
 
 # Requiuirments
-'''
+
 pip re
-...
+
